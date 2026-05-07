@@ -40,9 +40,9 @@ export function LandingPage() {
           <span className="font-bold text-2xl tracking-tighter text-white">NutriAI <span className="text-blue-500">Pro</span></span>
         </div>
         <div className="hidden md:flex items-center gap-8 mr-8 text-sm font-semibold text-slate-400">
-          <a href="#" className="hover:text-blue-400 transition-colors">Research Methodology</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Neural Engine</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Documentation</a>
+          <a href="#" className="hover:text-blue-400 transition-colors">How it Works</a>
+          <a href="#" className="hover:text-blue-400 transition-colors">AI Features</a>
+          <a href="#" className="hover:text-blue-400 transition-colors">Pricing</a>
         </div>
         <Button 
           variant="outline" 
@@ -50,7 +50,7 @@ export function LandingPage() {
           onClick={handleLogin}
           disabled={loading}
         >
-          {loading ? "INITIALIZING..." : "ACCESS SYSTEM"}
+          {loading ? "SIGNING IN..." : "GET STARTED"}
         </Button>
       </nav>
 
@@ -64,17 +64,17 @@ export function LandingPage() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold mb-10 uppercase tracking-[0.2em] shadow-sm">
             <Sparkles className="h-3.5 w-3.5" />
-            MCA RESEARCH PROJECT: v4.2 STABLE
+            AI-POWERED NUTRITION PLATFORM
           </div>
           <h1 className="text-6xl md:text-[7rem] font-bold tracking-tighter mb-10 leading-[0.95] text-white">
-            Precision Nutrition <br />
+            Precision Health <br />
             <span className="bg-gradient-to-br from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent italic font-serif">
-              Inference Engine
+              Intelligent Coaching
             </span>
           </h1>
           <p className="text-lg md:text-xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed font-medium">
-             A clinical-grade healthcare recommendation system utilizing advanced ML regressors, 
-             predictive biometrics, and real-time vision intelligence.
+             The smarter way to manage your health with real-time food recognition, 
+             predictive health analytics, and personalized nutrition plans.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -83,7 +83,7 @@ export function LandingPage() {
               className="bg-blue-600 hover:bg-blue-700 text-white h-16 px-12 rounded-2xl text-lg font-bold shadow-2xl shadow-blue-600/40 group transition-all active:scale-95"
               onClick={handleLogin}
             >
-              INITIALIZE SESSION
+              START YOUR JOURNEY
               <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             <div className="flex items-center gap-4">
@@ -95,8 +95,8 @@ export function LandingPage() {
                 ))}
               </div>
               <div className="text-left">
-                <p className="text-sm text-white font-bold">1,240 Nodes Active</p>
-                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Global Research Mesh</p>
+                <p className="text-sm text-white font-bold">50k+ Users</p>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Trusting NutriAI</p>
               </div>
             </div>
           </div>
@@ -151,14 +151,14 @@ export function LandingPage() {
           <div className="h-8 w-8 rounded-lg bg-slate-800 flex items-center justify-center">
             <HeartPulse className="text-slate-500 h-5 w-5" />
           </div>
-          <span className="font-bold text-slate-500 text-sm">NutriAI PRO v4.2</span>
+          <span className="font-bold text-slate-500 text-sm">NutriAI PRO</span>
         </div>
         <p className="text-slate-600 text-[11px] font-bold uppercase tracking-[0.2em]">
-          Experimental Research Core • Built with Gemini 1.5 Pro & Firestore RL
+          Powered by Gemini 1.5 Pro & Firestore
         </p>
         <div className="flex gap-6 text-slate-600 text-xs font-bold uppercase tracking-widest">
            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-           <a href="#" className="hover:text-white transition-colors">Protocol</a>
+           <a href="#" className="hover:text-white transition-colors">Terms</a>
         </div>
       </footer>
     </div>

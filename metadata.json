@@ -1,6 +1,6 @@
 {
-  "name": "NutriAI Intelligence",
-  "description": "An AI-powered personalized healthcare and nutrition intelligence platform providing meal recommendations, health risk predictions, and nutrition analytics.",
+  "name": "NutriAI Pro",
+  "description": "A high-performance AI-driven personalized health and nutrition intelligence platform.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["AI-Driven Nutrition", "Health Risk Analytics", "Meal Recommendation", "Food Recognition"]
 }

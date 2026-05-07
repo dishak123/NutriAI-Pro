@@ -66,13 +66,13 @@ export function Shell({ children, activeTab, setActiveTab }: ShellProps) {
 
         <div className="p-6 mt-auto">
           <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700">
-            <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Researcher Profile</p>
-            <p className="text-sm font-medium text-white truncate">v4.2-Stable-Build</p>
+            <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Member Profile</p>
+            <p className="text-sm font-medium text-white truncate">Premium Access</p>
             <button 
               onClick={() => auth.signOut()}
               className="text-[10px] text-blue-400 mt-2 hover:underline flex items-center gap-1"
             >
-              <LogOut className="h-3 w-3" /> Terminate Session
+              <LogOut className="h-3 w-3" /> Sign Out
             </button>
           </div>
         </div>
@@ -84,11 +84,11 @@ export function Shell({ children, activeTab, setActiveTab }: ShellProps) {
         <header className="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-[#0F172A]">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-            <span className="text-sm font-medium text-slate-400">Inference Engine: Active</span>
+            <span className="text-sm font-medium text-slate-400">NutriAI Core: Online</span>
           </div>
           <div className="flex items-center gap-6">
             <div className="text-right hidden sm:block">
-              <p className="text-xs text-slate-500 uppercase font-bold">Session State</p>
+              <p className="text-xs text-slate-500 uppercase font-bold">App Status</p>
               <p className="text-sm text-white capitalize">{activeTab.replace('-', ' ')}</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-blue-400">
