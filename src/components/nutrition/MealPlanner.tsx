@@ -36,7 +36,7 @@ export function MealPlanner({ profile }: { profile: any }) {
     } else {
       let errorMsg = "Failed to generate plan. Please try again.";
       if (!import.meta.env.VITE_GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
-        errorMsg = "VITE_GEMINI_API_KEY is missing. AI features are unavailable.";
+        errorMsg = "VITE_GEMINI_API_KEY is missing. Add it to Netlify and rebuild.";
       }
       toast.error(errorMsg);
     }

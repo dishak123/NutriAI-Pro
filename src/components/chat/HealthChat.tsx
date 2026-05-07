@@ -57,7 +57,7 @@ export function HealthChat({ profile }: { profile: any }) {
       if (err.message?.includes("API_KEY_INVALID")) {
         errorMsg = "Invalid API Key. Please check your Gemini configuration.";
       } else if (!import.meta.env.VITE_GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
-        errorMsg = "Gemini API Key is missing. Please configure VITE_GEMINI_API_KEY in your environment variables.";
+        errorMsg = "Gemini API Key is missing. Please configure VITE_GEMINI_API_KEY in Netlify and rebuild.";
       }
       setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
     } finally {
