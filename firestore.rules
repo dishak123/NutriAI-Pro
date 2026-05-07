@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Validation Blueprints ---
+
+    function isValidUserProfile(data) {
+      return data.uid == request.auth.uid 
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.age is int && data.age >= 0 && data.age <= 150
+        && data.gender in ['male', 'female', 'other']
+        && data.height is number && data.height > 0 && data.height < 300
+        && data.weight is number && data.weight > 0 && data.weight < 1000
+        && data.activityLevel in ['sedentary', 'lightly_active', 'moderately_active', 'very_active', 'extra_active']
+        && data.healthGoal in ['weight_loss', 'muscle_gain', 'maintain', 'disease_management']
+        && (data.get('diseases', []) is list && data.get('diseases', []).size() <= 20)
+        && (data.get('foodPreferences', []) is list && data.get('foodPreferences', []).size() <= 50)
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
+    }
+
+    function isValidDailyLog(data) {
+      return data.userId == request.auth.uid
+        && data.date is string && data.date.size() == 10
+        && data.calories is number && data.calories >= 0
+        && data.protein is number && data.protein >= 0
+        && data.carbs is number && data.carbs >= 0
+        && data.fats is number && data.fats >= 0
+        && data.water is number && data.water >= 0;
+    }
+
+    function isValidMealPlan(data) {
+      return data.userId == request.auth.uid
+        && data.title is string && data.title.size() <= 200
+        && data.items is list && data.items.size() <= 50
+        && data.createdAt == request.time;
+    }
+
+    // --- Collections ---
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create: if isOwner(userId) && isValidId(userId)
+        && isValidUserProfile(incoming()) 
+        && incoming().keys().hasAll(['uid', 'name', 'age', 'gender', 'height', 'weight', 'activityLevel', 'healthGoal', 'createdAt', 'updatedAt'])
+        && incoming().keys().size() >= 10; 
+      
+      allow update: if isOwner(userId) && isValidId(userId)
+        && incoming().uid == existing().uid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['name', 'age', 'gender', 'height', 'weight', 'activityLevel', 'healthGoal', 'diseases', 'foodPreferences', 'updatedAt'])
+        );
+
+      match /dailyLogs/{logId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidDailyLog(incoming()) && isValidId(logId);
+        allow update: if isOwner(userId) && isValidDailyLog(incoming())
+          && (incoming().diff(existing()).affectedKeys().hasOnly(['calories', 'protein', 'carbs', 'fats', 'water', 'meals']));
+        allow delete: if isOwner(userId);
+      }
+
+      match /mealPlans/{planId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidMealPlan(incoming()) && isValidId(planId);
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User's health data and demographic information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "age": { "type": "integer" },
+        "gender": { "type": "string", "enum": ["male", "female", "other"] },
+        "height": { "type": "number", "description": "in cm" },
+        "weight": { "type": "number", "description": "in kg" },
+        "activityLevel": { "type": "string", "enum": ["sedentary", "lightly_active", "moderately_active", "very_active", "extra_active"] },
+        "diseases": { "type": "array", "items": { "type": "string" } },
+        "healthGoal": { "type": "string", "enum": ["weight_loss", "muscle_gain", "maintain", "disease_management"] },
+        "foodPreferences": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "age", "gender", "height", "weight", "activityLevel", "healthGoal"]
+    },
+    "DailyLog": {
+      "title": "Daily Nutrition Log",
+      "description": "Daily intake log for a user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "calories": { "type": "number" },
+        "protein": { "type": "number" },
+        "carbs": { "type": "number" },
+        "fats": { "type": "number" },
+        "water": { "type": "number", "description": "in ml" },
+        "meals": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["userId", "date"]
+    },
+    "MealPlan": {
+      "title": "Meal Plan",
+      "description": "AI generated meal plans recommended for the user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores user profile data"
+    },
+    "users/{userId}/dailyLogs/{logId}": {
+      "schema": "DailyLog",
+      "description": "Stores daily nutrition logs for a user"
+    },
+    "users/{userId}/mealPlans/{planId}": {
+      "schema": "MealPlan",
+      "description": "Stores recommended meal plans"
+    }
+  }
+}
