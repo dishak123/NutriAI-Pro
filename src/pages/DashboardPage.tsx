@@ -16,7 +16,7 @@ export function DashboardPage({ activeTab }: { activeTab: string }) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const isKeyMissing = !process.env.GEMINI_API_KEY;
+  const isKeyMissing = !import.meta.env.VITE_GEMINI_API_KEY && !process.env.GEMINI_API_KEY;
 
   useEffect(() => {
     async function loadProfile() {
@@ -54,7 +54,7 @@ export function DashboardPage({ activeTab }: { activeTab: string }) {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle className="font-bold">AI Features Disabled</AlertTitle>
           <AlertDescription className="text-xs mt-1">
-            GEMINI_API_KEY is missing. If you are on Netlify, add it to your Environment Variables. 
+            GEMINI_API_KEY is missing. If you are on Netlify, add <b>VITE_GEMINI_API_KEY</b> to your Environment Variables and trigger a new deploy. 
             If you are in AI Studio, ensure the platform has provided a key.
           </AlertDescription>
         </Alert>

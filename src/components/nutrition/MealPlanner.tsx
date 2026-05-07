@@ -35,8 +35,8 @@ export function MealPlanner({ profile }: { profile: any }) {
       toast.success("AI Meal Plan Generated!");
     } else {
       let errorMsg = "Failed to generate plan. Please try again.";
-      if (!process.env.GEMINI_API_KEY) {
-        errorMsg = "GEMINI_API_KEY is missing. AI features are unavailable.";
+      if (!import.meta.env.VITE_GEMINI_API_KEY && !process.env.GEMINI_API_KEY) {
+        errorMsg = "VITE_GEMINI_API_KEY is missing. AI features are unavailable.";
       }
       toast.error(errorMsg);
     }
