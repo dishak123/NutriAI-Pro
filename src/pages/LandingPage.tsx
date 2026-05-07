@@ -26,6 +26,8 @@ export function LandingPage() {
         toast.error('Login popup was closed before completion.');
       } else if (err.code === 'auth/cancelled-popup-request') {
         // Ignore, common during dev/fast clicks
+      } else if (err.code === 'auth/unauthorized-domain') {
+        toast.error('This domain is not authorized in Firebase Console. Please add your Netlify/GitHub domain to Authorized domains in Authentication settings.');
       } else {
         toast.error(`Authentication error: ${err.message || 'Please try again'}`);
       }
@@ -108,49 +110,61 @@ export function LandingPage() {
         </motion.div>
 
         {/* How it Works Section */}
-        <section id="how-it-works" className="mt-48 w-full max-w-6xl px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6 tracking-tight text-white">Advanced Methodology</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto mb-16 text-lg font-medium">
-            Our multi-agent system processes biological signals and visual data to synthesize clinical-grade recommendations.
-          </p>
+        <section id="how-it-works" className="py-48 w-full max-w-6xl px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white text-balance">Advanced Methodology</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto mb-20 text-lg md:text-xl font-medium">
+              Our multi-agent system processes biological signals and visual data to synthesize clinical-grade recommendations.
+            </p>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
-              { step: "01", title: "Data Ingestion", desc: "Sync your biometrics, activity, and health history securely." },
-              { step: "02", title: "Neural Analysis", desc: "Our proprietary ML models compute your nutritional requirements." },
-              { step: "03", title: "Vision Scan", desc: "Snap photos of meals for instant calorie and nutrient tracking." },
-              { step: "04", title: "AI Coaching", desc: "Receive 24/7 personalized guidance from our inference engine." }
+              { step: "01", title: "Data Ingestion", desc: "Sync your biometrics, activity, and health history securely through our encrypted gateway." },
+              { step: "02", title: "Neural Analysis", desc: "Our proprietary ML models compute your unique nutritional requirements based on metabolic velocity." },
+              { step: "03", title: "Vision Scan", desc: "Snap photos of meals for instant caloric and macro-distribution estimation via tensor-inference." },
+              { step: "04", title: "AI Coaching", desc: "Receive 24/7 personalized guidance from our Gemini-powered inference engine." }
             ].map((s, i) => (
-              <div key={i} className="bg-slate-900/50 p-8 rounded-[2rem] border border-slate-800/50 text-left">
-                <span className="text-blue-500 font-mono text-xl font-bold mb-4 block">{s.step}</span>
-                <h4 className="text-lg font-bold text-white mb-2">{s.title}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+              <div key={i} className="bg-slate-900/50 p-10 rounded-[2.5rem] border border-slate-800/50 text-left hover:bg-slate-800/50 transition-colors group">
+                <span className="text-blue-500 font-mono text-2xl font-bold mb-6 block group-hover:scale-110 transition-transform origin-left">{s.step}</span>
+                <h4 className="text-xl font-bold text-white mb-4">{s.title}</h4>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">{s.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Features Bento Grid */}
-        <div id="features" className="mt-48 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl px-4">
-          {[
-            { 
-              icon: Brain, 
-              title: "ML Optimization", 
-              desc: "Deep neural networks for high-precision meal planning and micronutrient synthesis.",
-              accent: "from-blue-500/20 to-transparent"
-            },
-            { 
-              icon: Zap, 
-              title: "Vision Analysis", 
-              desc: "Real-time tensor-inference for instant caloric and macro-distribution estimation.",
-              accent: "from-emerald-500/20 to-transparent"
-            },
-            { 
-              icon: Shield, 
-              title: "Risk Prediction", 
-              desc: "Predictive diagnostics for chronic conditions using multivariate health history.",
-              accent: "from-indigo-500/20 to-transparent"
-            }
-          ].map((f, i) => (
+        <section id="features" className="py-48 w-full max-w-6xl px-4">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Intelligence Layer</h2>
+            <p className="text-slate-400 text-lg font-medium">The intersection of machine learning and biological precision.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { 
+                icon: Brain, 
+                title: "ML Optimization", 
+                desc: "Deep neural networks for high-precision meal planning and micronutrient synthesis based on your specific health markers.",
+                accent: "from-blue-500/20 to-transparent"
+              },
+              { 
+                icon: Zap, 
+                title: "Vision Analysis", 
+                desc: "Real-time edge-computing for instant food recognition and nutritional decomposition using advanced computer vision.",
+                accent: "from-emerald-500/20 to-transparent"
+              },
+              { 
+                icon: Shield, 
+                title: "Risk Prediction", 
+                desc: "Predictive diagnostics for chronic conditions using multivariate analysis of biometric trends and health patterns.",
+                accent: "from-indigo-500/20 to-transparent"
+              }
+            ].map((f, i) => (
             <motion.div 
                key={i}
                initial={{ opacity: 0, y: 20 }}
@@ -170,10 +184,11 @@ export function LandingPage() {
             </motion.div>
           ))}
         </div>
+      </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="mt-48 w-full max-w-4xl px-4 text-center">
-            <h2 className="text-4xl font-bold mb-16 tracking-tight text-white">Subscription Protocol</h2>
+        <section id="pricing" className="py-48 w-full max-w-4xl px-4 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-16 tracking-tight text-white">Subscription Protocol</h2>
             <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-8 opacity-20 transform translate-x-1/3 -translate-y-1/3">
                     <Sparkles className="h-48 w-48 text-white" />

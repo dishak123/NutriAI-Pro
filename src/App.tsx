@@ -47,19 +47,19 @@ export default function App() {
     );
   }
 
-  if (!user) {
-    return <LandingPage />;
-  }
-
-  if (!hasProfile) {
-    return <ProfileSetupPage onComplete={() => setHasProfile(true)} />;
-  }
-
   return (
-    <Shell activeTab={activeTab} setActiveTab={setActiveTab}>
-      <DashboardPage activeTab={activeTab} />
+    <>
+      {!user ? (
+        <LandingPage />
+      ) : !hasProfile ? (
+        <ProfileSetupPage onComplete={() => setHasProfile(true)} />
+      ) : (
+        <Shell activeTab={activeTab} setActiveTab={setActiveTab}>
+          <DashboardPage activeTab={activeTab} />
+        </Shell>
+      )}
       <Toaster position="bottom-right" richColors />
-    </Shell>
+    </>
   );
 }
 
