@@ -49,10 +49,17 @@ export function HealthChat({ profile }: { profile: any }) {
       });
 
       const result = await chat.sendMessage({ message: userMsg });
+      if (!result) throw new Error("Null response from AI");
       setMessages(prev => [...prev, { role: 'assistant', content: result.text }]);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting to my neural network. Please try again." }]);
+      let errorMsg = "I'm having trouble connecting to my neural network. Please try again.";
+      if (err.message?.includes("API_KEY_INVALID")) {
+        errorMsg = "Invalid API Key. Please check your Gemini configuration.";
+      } else if (!process.env.GEMINI_API_KEY) {
+        errorMsg = "Gemini API Key is missing. Please configure GEMINI_API_KEY in your environment variables.";
+      }
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
     } finally {
       setLoading(false);
     }

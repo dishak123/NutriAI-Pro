@@ -8,10 +8,15 @@ import { FoodRecognition } from '@/components/ai/FoodRecognition';
 import { HealthForecast } from '@/components/analytics/HealthForecast';
 import { HealthChat } from '@/components/chat/HealthChat';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function DashboardPage({ activeTab }: { activeTab: string }) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const isKeyMissing = !process.env.GEMINI_API_KEY;
 
   useEffect(() => {
     async function loadProfile() {
@@ -44,6 +49,16 @@ export function DashboardPage({ activeTab }: { activeTab: string }) {
 
   return (
     <div className="w-full h-full pb-20">
+      {isKeyMissing && (
+        <Alert variant="destructive" className="mb-8 border-red-500/20 bg-red-500/5 text-red-500 rounded-2xl">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle className="font-bold">AI Features Disabled</AlertTitle>
+          <AlertDescription className="text-xs mt-1">
+            GEMINI_API_KEY is missing. If you are on Netlify, add it to your Environment Variables. 
+            If you are in AI Studio, ensure the platform has provided a key.
+          </AlertDescription>
+        </Alert>
+      )}
       {activeTab === 'dashboard' && <DashboardOverview profile={profile} />}
       {activeTab === 'nutrition' && <MealPlanner profile={profile} />}
       {activeTab === 'risk' && <HealthRisk profile={profile} />}
