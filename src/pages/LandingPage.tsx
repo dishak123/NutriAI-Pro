@@ -14,17 +14,35 @@ export function LandingPage() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err) {
-      console.error(err);
-      toast.error('Authentication failed. Please try again.');
+      // Use signInWithPopup directly. 
+      // If it fails with "popup-closed-by-user" or similar, we might need more context.
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        toast.success('Successfully authenticated!');
+      }
+    } catch (err: any) {
+      console.error('Login Error:', err);
+      if (err.code === 'auth/popup-closed-by-user') {
+        toast.error('Login popup was closed before completion.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        // Ignore, common during dev/fast clicks
+      } else {
+        toast.error(`Authentication error: ${err.message || 'Please try again'}`);
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white flex flex-col selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[#0F172A] text-white flex flex-col selection:bg-blue-500/30 scroll-smooth">
       {/* Background Decor */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]" />
@@ -40,9 +58,9 @@ export function LandingPage() {
           <span className="font-bold text-2xl tracking-tighter text-white">NutriAI <span className="text-blue-500">Pro</span></span>
         </div>
         <div className="hidden md:flex items-center gap-8 mr-8 text-sm font-semibold text-slate-400">
-          <a href="#" className="hover:text-blue-400 transition-colors">How it Works</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">AI Features</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Pricing</a>
+          <button onClick={() => scrollToSection('how-it-works')} className="hover:text-blue-400 transition-colors">How it Works</button>
+          <button onClick={() => scrollToSection('features')} className="hover:text-blue-400 transition-colors">AI Features</button>
+          <button onClick={() => scrollToSection('pricing')} className="hover:text-blue-400 transition-colors">Pricing</button>
         </div>
         <Button 
           variant="outline" 
@@ -66,7 +84,7 @@ export function LandingPage() {
             <Sparkles className="h-3.5 w-3.5" />
             AI-POWERED NUTRITION PLATFORM
           </div>
-          <h1 className="text-6xl md:text-[7rem] font-bold tracking-tighter mb-10 leading-[0.95] text-white">
+          <h1 className="text-6xl md:text-[7rem] font-bold tracking-tighter mb-10 leading-[0.95] text-white text-balance">
             Precision Health <br />
             <span className="bg-gradient-to-br from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent italic font-serif">
               Intelligent Coaching
@@ -86,24 +104,33 @@ export function LandingPage() {
               START YOUR JOURNEY
               <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
-            <div className="flex items-center gap-4">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-10 w-10 rounded-xl border-2 border-[#0F172A] bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-400 shadow-xl overflow-hidden">
-                    <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Researcher" className="w-full h-full object-cover opacity-70" />
-                  </div>
-                ))}
-              </div>
-              <div className="text-left">
-                <p className="text-sm text-white font-bold">50k+ Users</p>
-                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Trusting NutriAI</p>
-              </div>
-            </div>
           </div>
         </motion.div>
 
+        {/* How it Works Section */}
+        <section id="how-it-works" className="mt-48 w-full max-w-6xl px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6 tracking-tight text-white">Advanced Methodology</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto mb-16 text-lg font-medium">
+            Our multi-agent system processes biological signals and visual data to synthesize clinical-grade recommendations.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { step: "01", title: "Data Ingestion", desc: "Sync your biometrics, activity, and health history securely." },
+              { step: "02", title: "Neural Analysis", desc: "Our proprietary ML models compute your nutritional requirements." },
+              { step: "03", title: "Vision Scan", desc: "Snap photos of meals for instant calorie and nutrient tracking." },
+              { step: "04", title: "AI Coaching", desc: "Receive 24/7 personalized guidance from our inference engine." }
+            ].map((s, i) => (
+              <div key={i} className="bg-slate-900/50 p-8 rounded-[2rem] border border-slate-800/50 text-left">
+                <span className="text-blue-500 font-mono text-xl font-bold mb-4 block">{s.step}</span>
+                <h4 className="text-lg font-bold text-white mb-2">{s.title}</h4>
+                <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Features Bento Grid */}
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+        <div id="features" className="mt-48 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl px-4">
           {[
             { 
               icon: Brain, 
@@ -143,6 +170,29 @@ export function LandingPage() {
             </motion.div>
           ))}
         </div>
+
+        {/* Pricing Section */}
+        <section id="pricing" className="mt-48 w-full max-w-4xl px-4 text-center">
+            <h2 className="text-4xl font-bold mb-16 tracking-tight text-white">Subscription Protocol</h2>
+            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-20 transform translate-x-1/3 -translate-y-1/3">
+                    <Sparkles className="h-48 w-48 text-white" />
+                </div>
+                <div className="relative z-10 flex flex-col items-center">
+                    <span className="px-4 py-1.5 rounded-full bg-white/20 text-white text-[10px] font-bold mb-8 uppercase tracking-widest">Limited Access</span>
+                    <h3 className="text-3xl font-bold text-white mb-4">Open Beta Access</h3>
+                    <p className="text-blue-100 mb-10 max-w-md mx-auto font-medium">Get full access to the AI inference engine and health analytics for free during our experimental phase.</p>
+                    <div className="text-5xl font-bold text-white mb-10">$0<span className="text-blue-200 text-lg">/month</span></div>
+                    <Button 
+                        size="lg" 
+                        className="bg-white text-blue-600 hover:bg-slate-100 h-14 px-10 rounded-xl text-md font-bold transition-all active:scale-95"
+                        onClick={handleLogin}
+                    >
+                        INITIALIZE FREE SESSION
+                    </Button>
+                </div>
+            </div>
+        </section>
       </main>
 
       {/* Footer */}
@@ -156,10 +206,6 @@ export function LandingPage() {
         <p className="text-slate-600 text-[11px] font-bold uppercase tracking-[0.2em]">
           Powered by Gemini 1.5 Pro & Firestore
         </p>
-        <div className="flex gap-6 text-slate-600 text-xs font-bold uppercase tracking-widest">
-           <a href="#" className="hover:text-white transition-colors">Privacy</a>
-           <a href="#" className="hover:text-white transition-colors">Terms</a>
-        </div>
       </footer>
     </div>
   );
