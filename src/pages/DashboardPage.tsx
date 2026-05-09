@@ -17,9 +17,14 @@ export function DashboardPage({ activeTab }: { activeTab: string }) {
   const [loading, setLoading] = useState(true);
 
   const isKeyMissing = !import.meta.env.VITE_GEMINI_API_KEY && !process.env.GEMINI_API_KEY;
+  const isLiteralKey = import.meta.env.VITE_GEMINI_API_KEY === 'GEMINI_API_KEY';
 
   if (isKeyMissing && typeof window !== 'undefined') {
     console.error("NUTRIAL DEBUG: VITE_GEMINI_API_KEY is missing from environment. AI will be disabled.");
+  }
+
+  if (isLiteralKey && typeof window !== 'undefined') {
+    console.error("NUTRIAL DEBUG: VITE_GEMINI_API_KEY contains placeholder text 'GEMINI_API_KEY'. Please replace with actual secret.");
   }
 
   useEffect(() => {
@@ -53,33 +58,37 @@ export function DashboardPage({ activeTab }: { activeTab: string }) {
 
   return (
     <div className="w-full h-full pb-20">
-      {isKeyMissing && (
+      {(isKeyMissing || isLiteralKey) && (
         <Alert variant="destructive" className="mb-8 border-red-500/20 bg-red-500/5 text-red-500 rounded-2xl p-6">
           <div className="flex gap-4">
             <AlertCircle className="h-6 w-6 mt-1 flex-shrink-0" />
             <div className="space-y-4">
               <div>
-                <AlertTitle className="text-lg font-bold">AI Features Disabled</AlertTitle>
+                <AlertTitle className="text-lg font-bold">
+                  {isLiteralKey ? 'Action Required: Placeholder Value Detected' : 'AI Features Disabled'}
+                </AlertTitle>
                 <AlertDescription className="text-sm opacity-90">
-                  The application cannot find your <b>VITE_GEMINI_API_KEY</b>. 
+                  {isLiteralKey 
+                    ? "In Netlify, you've entered the literal words 'GEMINI_API_KEY' as the value. You must replace this with your actual secret key from Google AI Studio."
+                    : "The application cannot find your VITE_GEMINI_API_KEY."}
                 </AlertDescription>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <div className="p-4 rounded-xl bg-red-500/10 space-y-2 border border-red-500/10">
-                  <h4 className="font-bold uppercase tracking-wider text-[10px]">1. Fix the "0 Values" Issue</h4>
-                  <p>Your screenshot shows "0 values in all deploy contexts". This means the key is defined but <b>has no value</b>.</p>
+                  <h4 className="font-bold uppercase tracking-wider text-[10px]">1. Update the Value</h4>
                   <ul className="list-disc list-inside space-y-1 opacity-80">
-                    <li>Click the variable in Netlify</li>
-                    <li>Paste your key into the <b>Value</b> field</li>
-                    <li>Ensure "All scopes" is checked</li>
+                    <li>Go to Netlify Env Variables</li>
+                    <li>Edit <b>VITE_GEMINI_API_KEY</b></li>
+                    <li>Delete the placeholder text</li>
+                    <li><b>Paste your real key</b> (e.g. AIzaSy...)</li>
                     <li>Click <b>Save</b></li>
                   </ul>
                 </div>
 
                 <div className="p-4 rounded-xl bg-red-500/10 space-y-2 border border-red-500/10">
-                  <h4 className="font-bold uppercase tracking-wider text-[10px]">2. Trigger New Build</h4>
-                  <p>Static sites <b>require a rebuild</b> to inject secrets into the code.</p>
+                  <h4 className="font-bold uppercase tracking-wider text-[10px]">2. Re-Deploy</h4>
+                  <p>Static sites need a rebuild to see new keys.</p>
                   <ul className="list-disc list-inside space-y-1 opacity-80">
                     <li>Go to the <b>Deploys</b> tab</li>
                     <li>Click <b>Trigger deploy</b></li>
