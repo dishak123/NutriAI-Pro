@@ -6,7 +6,7 @@
 The primary objective of **NutriAI Pro** is to engineer a high-performance, personalized health intelligence platform that leverages Artificial Intelligence (AI) to provide actionable nutritional insights. The system aims to bridge the gap between static health tracking and dynamic coaching by utilizing Large Language Models (LLMs) and predictive analytics to suggest optimized meal plans, assess health risks, and provide real-time nutritional guidance.
 
 ### 1.2 Selection of Features and Tools
-The feature set was selected based on current trends in digital health and bioinformatics, specifically focusing on:
+The feature set was selected by the M.Sc. Computer Science student based on current trends in computational health informatics and intelligent systems engineering, specifically focusing on:
 - **AI-Powered Coaching**: Real-time natural language interaction for health queries.
 - **Predictive Health Analytics**: Utilizing statistical regression for disease probability and efficiency scores.
 - **Food Vision**: Computer vision integration for automated caloric and macronutrient estimation from images.
@@ -21,24 +21,42 @@ The application follows a **Full-Stack Modern Web Architecture**:
 
 ---
 
-## 2. Technology Stack and Development Environment
+## 2. Technology Stack and Technical Specifications
 
-### 2.1 Programming Languages and Frameworks
-- **TypeScript**: Used as the primary language to ensure type safety and maintainability across the codebase.
-- **React 19**: Leveraged for its modern hook-based architecture and efficient DOM reconciliation.
-- **Vite**: Employed as the build tool and development server for its rapid Hot Module Replacement (HMR) capabilities.
+The development of NutriAI Pro necessitated a multi-disciplinary stack, integrating modern web technologies with advanced Artificial Intelligence and cloud-native services.
 
-### 2.2 Libraries and Tools
-- **Tailwind CSS**: Utilized for utility-first responsive design.
-- **Motion (Framer)**: Integrated for high-fidelity UI animations and state transitions.
-- **Recharts & D3**: Used for data visualization of health metrics and predictive analytics.
-- **Firebase SDK**: Applied for serverless database operations and real-time state synchronization.
-- **@google/genai**: The official SDK for interacting with the Gemini 1.5 Pro and Flash models.
+### 2.1 Programming Languages and Core Environments
+- **TypeScript (v5.8.x)**: Selected as the primary development language. TypeScript extends JavaScript by adding static type definitions, which was critical for ensuring data integrity when handling complex health metrics and API responses.
+- **Node.js Runtime**: Utilized as the underlying execution environment for the build pipeline and the Express-based backend services.
+- **Python (Conceptual Integration)**: While the frontend is TypeScript-based, the deployment logic and auxiliary scripts (such as those for Streamlit compatibility) utilize Python 3.10+ to interface with scientific computing libraries.
 
-### 2.3 Development Environment
-- **IDE**: Visual Studio Code / AI Studio Environment.
-- **Package Management**: NPM (Node Package Manager).
-- **Version Control**: Git for local tracking and GitHub for remote repository management.
+### 2.2 Frontend Framework and Build Architecture
+- **React 19**: The foundation of the user interface, utilizing a component-based architecture and concurrent rendering to provide a fluid, high-performance experience.
+- **Vite (v6.x)**: Employed as the next-generation frontend tool. Unlike traditional bundlers, Vite uses native ESM to provide an extremely fast development environment and optimized production builds.
+
+### 2.3 Comprehensive Package Taxonomy
+The following table outlines the specialized libraries and packages integrated into the system architecture:
+
+| Category | Package Name | Functional Purpose |
+| :--- | :--- | :--- |
+| **Generative AI** | `@google/genai` | Interface for Gemini 1.5 Pro/Flash models, enabling health coaching and multimodal vision analysis. |
+| **Cloud Services** | `firebase` | Facilitates real-time persistence (Firestore) and secure authentication. |
+| **Animations** | `motion` (Framer) | High-performance orchestration of transition effects and gesture-based feedback. |
+| **Data Visualization** | `recharts` | Composition of responsive, SVG-based charts for predictive biometrics. |
+| **Styling** | `tailwindcss` | Utility-first CSS framework for rapid, responsive UI construction. |
+| **Animation Utils** | `tw-animate-css` | Atomic animation utility classes for micro-interactions. |
+| **Typography** | `@fontsource-variable/geist` | Variable font integration for technical-grade legibility. |
+| **Type Validation** | `zod` | Schema-based validation for runtime type-checking of API payloads. |
+| **Icons** | `lucide-react` | Scalable vector graphics library for consistent iconography. |
+| **Form Management** | `react-hook-form` | Performant management of complex user input states (e.g., biometric registration). |
+| **File Handling** | `react-dropzone` | Drag-and-drop file interface for the "Food Vision" image upload system. |
+| **Server Logic** | `express` | Robust routing and middleware layer for serving the SPA and handling API proxies. |
+
+### 2.4 Development and Deployment Tools
+- **NPM (v10.x)**: Used for deterministic dependency management and script execution.
+- **PostCSS & Autoprefixer**: Integrated into the build pipeline to ensure cross-browser CSS compatibility.
+- **TSX**: TypeScript execution engine for the server-side entry points during development.
+- **Vercel/Netlify CLI**: Orchestation tools for managing the Continuous Deployment (CD) pipeline and edge-caching configurations.
 
 ---
 
